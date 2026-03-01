@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetArt - Amor em Cada Detalhe</title>
+    <style>
+        :root { --primary: #FF6B6B; --dark: #2C3E50; --light: #F7F9FC; }
+        body { font-family: sans-serif; background: var(--light); color: var(--dark); margin: 0; padding: 20px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .product-card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .product-image img { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; }
+        .btn-comprar { display: block; background: var(--primary); color: white; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center;">Nossos Produtos</h2>
+    <div class="products-grid" id="produtos-container">
+        <p style="text-align: center;">Carregando...</p>
+    </div>
+
+    <script>
+        fetch('produtos.json')
+            .then(response => response.json())
+            .then(produtos => {
+                const container = document.getElementById('produtos-container');
+                container.innerHTML = produtos.map(p => `
+                    <div class="product-card">
+                        <div class="product-image"><img src="${p.imagem}" alt="${p.nome}"></div>
+                        <h3>${p.nome}</h3>
+                        <p>Preço: R$ ${p.preco}</p>
+                        <a href="${p.linkPagamento}" class="btn-comprar">Comprar Agora</a>
+                    </div>
+                `).join('');
+            })
+            .catch(err => console.error(err));
+    </script>
+</body>
+</html>
